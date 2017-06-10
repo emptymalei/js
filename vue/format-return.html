@@ -7,7 +7,7 @@
 
 
 
-   <script src="assets/vue.min.js"></script>
+   <!-- <script src="assets/vue.min.js"></script> -->
 
    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.4.2/css/bulma.css" />
 
@@ -25,40 +25,48 @@
 <body>
 
 
-<h1>Neutrino Paper Feed</h1>
+   <h1>Neutrino Paper Feed</h1>
 
 
    <div id="app">
 
 
-
-
-
       <div v-if="!feed">Loading Feed</div>
       <div v-else>
-         <div v-for="feedeach in feed">
+         <div v-for="(feedeach, index) in feed">
 
-            This is a list of recent papers of  {{feedeach.key}}
-         <div v-for="item in feedeach.value">
-            <p>
-               <span>Date Added</span><br>
-                  {{item.creation_date}}
-            </p>
-            <p><span>Authors</span><br>
-               <span v-for="author in item.authors">
+            This is a list of recent papers of {{ids[index]}}
+
+            <div v-for="item in feedeach">
+               <p>
+                  <span>Date Added</span><br> {{item.creation_date}}
+               </p>
+
+               <p><span>Authors</span><br>
+                  <span v-for="author in item.authors">
                   <span style="margin:1em;">{{author.first_name}} {{author.last_name}}</span>
-               </span>
-            </p>
-         <p><span>Summary</span><br>
-            {{item.abstract[0].summary}}</p>
+                  </span>
+               </p>
+               <p><span>Summary</span><br>
+                  <span v-if="item.abstract[0]==undefined">
+                     {{item.abstract.summary}}
+                  </span>
+                  <span v-else>
+                     {{item.abstract[0].summary}}
+                  </span>
+               </p>
+            </div>
+
          </div>
-      </div>
+
+         <div>
+            <h2>Return</h2>
+            <pre>{{feed}}</pre>
+         </div>
+
       </div>
 
-      <div>
-         <h2>First 3 Return Return</h2>
-         <pre>{{feed}}</pre>
-      </div>
+
 
 
 
@@ -70,7 +78,9 @@
 
 </body>
 
-<script src="assets/vue.min.js"></script>
+<!-- <script src="assets/vue.min.js"></script> -->
+<script src="assets/vue.js"></script>
+
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/5.4.0/Rx.min.js"></script>

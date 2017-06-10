@@ -21,6 +21,7 @@ var app = new Vue({
 		// right now it's false, that way I can check if the page is done loading
 		feed: [],
 		timer: '',
+		items: ['a','b','c'],
 		ids: ['Georg.G.Raffelt.1','Huaiyu.Duan.1']
 	},
 
@@ -30,19 +31,18 @@ var app = new Vue({
 
 
 		for(var i=0; i< _this.ids.length; i++) {
-			console.log(_this.ids[i]);
-			this.userPromise(function (result) {
+			var names = _this.ids[i];
+			this.feedPromise(function (result) {
 				result.flatMap(function (val) {
 					return Rx.Observable.of(val.body);
 				}).subscribe(function (result) {
 					console.log(' ');
 					console.info('subscribing to results');
 					console.log(i);
-					console.log(_this.ids[i]);
-					_this.feed.push( {
-						key: _this.ids[i],
-						value: result.slice(0,2)
-					});
+					console.log( names );
+					_this.feed.push(
+						result.slice(0,2)
+					);
 				}, function (err) {
 					throw err;
 				}, function () {
@@ -57,7 +57,7 @@ var app = new Vue({
 	},
 
 	methods: {
-		userPromise: function userPromise(cb, id) {
+		feedPromise: function feedPromise(cb, id) {
 			// save a promise
 			console.log(' ');
 			console.info('sending http req');
@@ -66,7 +66,6 @@ var app = new Vue({
 
 			promise.then(function (result) {
 				// save promise inside callback
-				console.log(' ');
 				console.info('Got results back');
 
 				cb(Rx.Observable.from([result]));
